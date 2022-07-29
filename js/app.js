@@ -39,6 +39,7 @@ function createGrid(dim, tableContainer) {
     // => SE table container non è vuoto chiamo clearGame
     if (tableContainer.innerHTML != '') {
         clearGame();
+        tableContainer.innerHTML = '';
     }
     const cellsNum = dim ** 2;
 
