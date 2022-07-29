@@ -147,10 +147,7 @@ function clickHandler(e) {
             }
         }
     }
-
     // console.log(x, y);
-
-
 
     // aggiungo classe clicked in ogni caso
     matrix[x][y].classList.toggle('clicked');
@@ -161,6 +158,8 @@ function clickHandler(e) {
     // controllo se ho trovato una bomba
     if (matrix[x][y].classList[1] == 'bomb') {
         statusImg.src = "img/sad.png"
+        matrix[x][y].innerHTML = '&#128163';
+        revealAll(matrix);
         clearGame();
     } else { // altrimenti velo l'area adiacente senza bombe
         revealArea(matrix, x, y);
@@ -172,10 +171,6 @@ function clickHandler(e) {
     // dobbiamo far sì che una volta partita la funzione venga rimosso l'evento
     matrix[x][y].removeEventListener('click', clickHandler);
 }
-
-// function clickHandler(e) {
-//     console.dir(e);
-// }
 
 // funzione che "pulisce" il gioco all'avvio di un new game
 function clearGame() {
@@ -265,6 +260,16 @@ function addHandler(matrix) {
             // });
             // console.log(matrix[x][y]);
             matrix[x][y].addEventListener('click', clickHandler);
+            // TODO: implemento la bandierina che rimarrà attiva anche a gioco finito
+            matrix[x][y].addEventListener('contextmenu', function (ev) {
+                ev.preventDefault();
+                if (this.innerHTML == '') {
+                    this.innerHTML = '&#9873;';
+                } else {
+                    this.innerHTML = '';
+                }
+                return false;
+            }, false);
         }
     }
 }
@@ -335,6 +340,9 @@ function revealArea(matrix, x, y) {
 function revealAll(matrix) {
     for (let x = 0; x < matrix.length; x++) {
         for (let y = 0; y < matrix.length; y++) {
+            if (matrix[x][y].classList[matrix[x][y].classList.length - 1] == 'bomb') {
+                matrix[x][y].innerHTML = '&#128163';
+            }
             matrix[x][y].classList.add('clicked');
         }
     }
