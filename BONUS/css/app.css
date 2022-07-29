@@ -40,6 +40,10 @@ footer a:hover {
     text-decoration: underline;
 }
 
+button .navbar-toggler-icon {
+    filter: invert(1);
+}
+
 .btns {
     font-size: 1.5rem;
 }
@@ -52,11 +56,11 @@ footer a:hover {
 }
 
 .btns select {
-    padding: 0.5rem 1.5rem;
+    /* padding: 0.5rem 1.5rem; */
 }
 
 .btns input {
-    padding: 0.25rem 3rem;
+    /* padding: 0.25rem 3rem; */
 }
 
 #statusImg {
@@ -69,13 +73,14 @@ footer a:hover {
 }
 
 .square {
+    width: 25px;
     aspect-ratio: 1;
     border: 2px solid white;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
-    font-size: 2rem;
+    font-size: 1rem;
     cursor: pointer;
     background-color: grey;
 }

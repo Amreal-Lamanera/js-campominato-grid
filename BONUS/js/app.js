@@ -32,7 +32,7 @@ function playGame() {
     // console.log(tableContainerElement);
 
     // imposto lo stile in base alla difficoltà
-    tableContainerElement.style.gridTemplateColumns = `repeat(${diff},75px)`;
+    tableContainerElement.style.gridTemplateColumns = `repeat(${diff},1fr)`;
 
 
     // Per adesso generiamo una griglia statica - no difficoltà
