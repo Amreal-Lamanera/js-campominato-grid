@@ -14,7 +14,7 @@ console.log(play);
 play.addEventListener('click', playGame);
 
 function playGame() {
-    console.log("gioca");
+    // console.log("gioca");
 
     // recupero difficoltà dal DOM
     let diff = document.querySelector('select').value;
@@ -36,7 +36,7 @@ function createGrid(dim, tableContainer) {
     // console.log(tableContainer.innerHTML);
 
     // problema, anche svuotando gli event listner del gioco precedente rimangono attivi - problemi di performance dopo molti new game
-    // => SE table container non è vuoto chiamo clearGame
+    // => SE table container non è vuoto chiamo clearGame e svuoto
     if (tableContainer.innerHTML != '') {
         clearGame();
         tableContainer.innerHTML = '';
@@ -66,6 +66,9 @@ function getSquareElement() {
 function clickHandler() {
     const square = this;
     square.classList.toggle('clicked');
+    // scrivo in console il numero della cella
+    console.log(square.innerHTML);
+
     // dobbiamo far sì che una volta partita la funzione venga rimosso l'evento
     square.removeEventListener('click', clickHandler);
 }
@@ -73,12 +76,11 @@ function clickHandler() {
 function clearGame() {
     // so che se non è vuoto, tutti gli elementi avranno ALMENO la classe square
     const squareElements = document.querySelectorAll('.square');
-    console.log(squareElements.length);
+    // console.log(squareElements.length);
 
+    // PER OGNI elemento square, rimuovo l'evento click
     for (let i = 0; i < squareElements.length; i++) {
         squareElements[i].removeEventListener('click', clickHandler);
         console.dir(squareElements[i]);
     }
-
-
 }
