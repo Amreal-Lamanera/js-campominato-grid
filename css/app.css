@@ -13,14 +13,16 @@ main {
     align-items: center;
 }
 
-/* footer {} */
+footer a {
+    color: #000;
+    text-decoration: none;
+}
 
 .tableContainer {
     flex-basis: 100%;
     display: grid;
     aspect-ratio: 1;
     background-color: rgba(255, 255, 255, 0.1);
-    /* grid-template-columns: repeat(10, 1fr); */
 }
 
 .square {
