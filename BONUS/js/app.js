@@ -1,4 +1,4 @@
-console.log('ok');
+// console.log('ok');
 
 // TODO: come editare colonne del grid:
 // const prova = document.querySelector('.tableContainer');
@@ -8,13 +8,19 @@ console.log('ok');
 
 // recupero tasto play dal DOM
 const play = document.querySelector("input[type='submit']");
-console.log(play);
+// console.log(play);
 
 // avvio il gioco al click
 play.addEventListener('click', playGame);
 
 function playGame() {
     // console.log("gioca");
+
+    // recupero status img e la rendo visibile
+    const statusImg = document.getElementById('statusImg');
+    statusImg.style.display = "block";
+    // console.dir(statusImg);
+
 
     // recupero difficoltà dal DOM
     let diff = document.querySelector('select').value;
@@ -25,7 +31,7 @@ function playGame() {
     // console.log(tableContainerElement);
 
     // imposto lo stile in base alla difficoltà
-    tableContainerElement.style.gridTemplateColumns = `repeat(${diff}, 1fr)`;
+    tableContainerElement.style.gridTemplateColumns = `repeat(${diff},75px)`;
 
 
     // Per adesso generiamo una griglia statica - no difficoltà
@@ -45,7 +51,19 @@ function createGrid(dim, tableContainer) {
 
     // genero un array di numeri random
     const bombsArray = [];
-    for (let i = 0; i < dim; i++) {
+    let bombsNum;
+    // console.log(dim);
+
+    if (dim == 7) {
+        bombsNum = dim;
+    } else if (dim === 9) {
+        bombsNum = dim * 2;
+    } else {
+        bombsNum = dim * 3;
+    }
+    // console.log("NUMERO: ", bombsNum);
+
+    for (let i = 0; i < bombsNum; i++) {
         bombsArray[i] = Math.floor(Math.random() * cellsNum);
         // SE elemento ripetuto, ripeto il ciclo decrementando i
         // TODO: trovata su internet, non so come funzioni...
@@ -56,7 +74,7 @@ function createGrid(dim, tableContainer) {
     }
 
     // stampo in console dove sono le bombe
-    for (let i = 0; i < dim; i++) {
+    for (let i = 0; i < bombsNum; i++) {
         console.log((bombsArray[i] + 1));
     }
 
@@ -66,7 +84,7 @@ function createGrid(dim, tableContainer) {
         const cell = getSquareElement();
 
         // controllo se inserire una bomba casualmente
-        for (let j = 0; j < dim; j++) {
+        for (let j = 0; j < bombsArray.length; j++) {
             if (bombsArray[j] === i) {
                 cell.classList.add('bomb');
             }
@@ -90,9 +108,14 @@ function getSquareElement() {
 
 function clickHandler() {
     const square = this;
+    if (square.classList[1] == 'bomb') {
+        statusImg.src = "img/sad.png"
+        clearGame();
+    }
     square.classList.toggle('clicked');
+
     // scrivo in console il numero della cella
-    console.log(square.innerHTML);
+    // console.log(square.innerHTML);
 
     // dobbiamo far sì che una volta partita la funzione venga rimosso l'evento
     square.removeEventListener('click', clickHandler);
@@ -106,7 +129,7 @@ function clearGame() {
     // PER OGNI elemento square, rimuovo l'evento click
     for (let i = 0; i < squareElements.length; i++) {
         squareElements[i].removeEventListener('click', clickHandler);
-        console.dir(squareElements[i]);
+        // console.dir(squareElements[i]);
     }
 }
 

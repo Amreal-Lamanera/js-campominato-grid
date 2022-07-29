@@ -6,11 +6,20 @@ body {
     height: 100vh;
 }
 
+header {
+    flex-basis: 0;
+}
+
 main {
+    flex-basis: 0;
     flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+footer {
+    flex-basis: 0;
 }
 
 footer a {
@@ -18,11 +27,13 @@ footer a {
     text-decoration: none;
 }
 
+#statusImg {
+    width: 100px;
+    display: none;
+}
+
 .tableContainer {
-    flex-basis: 100%;
     display: grid;
-    aspect-ratio: 1;
-    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .square {
