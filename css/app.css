@@ -17,12 +17,10 @@ main {
 
 .tableContainer {
     flex-basis: 100%;
-    max-width: 800px;
-    margin: 0 auto;
     display: grid;
     aspect-ratio: 1;
     background-color: rgba(255, 255, 255, 0.1);
-    grid-template-columns: repeat(8, 1fr);
+    /* grid-template-columns: repeat(10, 1fr); */
 }
 
 .square {
