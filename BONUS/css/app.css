@@ -1,3 +1,7 @@
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
 .logo img {
     width: 100px;
 }
@@ -8,6 +12,7 @@ body {
 
 header {
     flex-basis: 0;
+    background-color: rgb(36, 36, 36);
 }
 
 main {
@@ -16,15 +21,36 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgb(76, 76, 76);
 }
 
 footer {
     flex-basis: 0;
+    background-color: rgb(36, 36, 36);
 }
 
 footer a {
-    color: #000;
+    color: #FFF;
     text-decoration: none;
+}
+
+.btns {
+    font-size: 1.5rem;
+}
+
+.btns input,
+.btns select {
+    border-radius: 1.5rem;
+    background-color: white;
+    color: black;
+}
+
+.btns select {
+    padding: 0.5rem 1.5rem;
+}
+
+.btns input {
+    padding: 0.25rem 3rem;
 }
 
 #statusImg {
@@ -45,6 +71,7 @@ footer a {
     color: white;
     font-size: 2rem;
     cursor: pointer;
+    background-color: grey;
 }
 
 .square.clicked {

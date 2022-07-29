@@ -18,6 +18,7 @@ function playGame() {
 
     // recupero status img e la rendo visibile
     const statusImg = document.getElementById('statusImg');
+    statusImg.src = "img/smile.png";
     statusImg.style.display = "block";
     // console.dir(statusImg);
 
