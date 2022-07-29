@@ -1,0 +1,41 @@
+.logo img {
+    width: 100px;
+}
+
+body {
+    height: 100vh;
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* footer {} */
+
+.tableContainer {
+    flex-basis: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: grid;
+    aspect-ratio: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.square {
+    aspect-ratio: 1;
+    border: 2px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.square.clicked {
+    background-color: tomato;
+}
