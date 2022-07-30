@@ -111,7 +111,7 @@ function getSquareElement() {
 
 // funzione che gestisce il click
 function clickHandler(e) {
-    // console.log(e.path[1].childNodes[0]);
+    // console.log(e.composedPath()[1]);
     // console.log(this);
 
     // TODO: NON POSSO passare parametri, altrimenti il remove listener è IMPOSSIBILE!!!!! @MAURO
@@ -125,8 +125,8 @@ function clickHandler(e) {
     // console.log(row);
 
     const grid = [];
-    for (let i = 0; i < e.path[1].childNodes.length; i++) {
-        grid[i] = e.path[1].childNodes[i];
+    for (let i = 0; i < e.composedPath()[1].childNodes.length; i++) {
+        grid[i] = e.composedPath()[1].childNodes[i];
     }
     // console.log(grid);
 
