@@ -13,6 +13,8 @@ const statusImg = document.getElementById('statusImg');
 const toRevealElement = document.getElementById('toReveal');
 // console.log(toRevealElement);
 const bombsNumElement = document.getElementById('bombsNum');
+// variabile globale contenente la posizione delle bombe
+let bombsArray = [];
 
 /*******************************************
     funzione di avvio del gioco
@@ -54,11 +56,12 @@ function playGame() {
     bombsNumElement.innerHTML = cellsNum - bombsNum
 
     // genero un array di numeri random
-    const bombsArray = getBombsArray(bombsNum, cellsNum);
-    // console.log(bombsArray);
+    // const bombsArray = getBombsArray(bombsNum, cellsNum);
+    bombsArray = getBombsArray(bombsNum, cellsNum);
+    console.log(bombsArray);
 
     // inserisco le bombe
-    insertBombs(bombsArray, myGrid);
+    // insertBombs(bombsArray, myGrid);
 
     // TODO: la matrice dovrebbe essere superflua qua... bisogna quindi chiamare addHandler su myGrid e modificare la funziona di conseguenza - DA VERIFICARE
 
@@ -94,6 +97,8 @@ function createGrid(dim, tableContainer) {
     // PER OGNI ciclo generare elemento html (square) e lo inserisco nel DOM
     for (let i = 0; i < dim; i++) {
         const cell = getSquareElement();
+
+        cell.dataset.myCell = i;
 
         //TODO: DA AGGIUNGERE PER CHEATTARE CON LA CONSOLE!!!
         // cell.innerHTML = i + 1;
@@ -142,7 +147,7 @@ function clickHandler(e) {
 
     // matrix recuperato
     const matrix = createMatrix(dim, grid);
-    // console.log(matrix[0][0]);
+    // console.log((parseInt(matrix[0][0].dataset.myCell)));
 
     let x;
     let y;
@@ -166,12 +171,12 @@ function clickHandler(e) {
 
 
     // controllo se ho trovato una bomba
-    if (matrix[x][y].classList[1] == 'bomb') {
+    if (bombsArray.includes(parseInt(matrix[x][y].dataset.myCell))) {
         statusImg.src = "img/sad.png"
         matrix[x][y].innerHTML = '&#128163';
         revealAll(matrix);
         clearGame();
-    } else { // altrimenti velo l'area adiacente senza bombe
+    } else { // altrimenti svelo l'area adiacente senza bombe
         revealArea(matrix, x, y);
     }
 
@@ -238,22 +243,22 @@ const unique = (value, index, self) => {
     return self.indexOf(value) === index;
 }
 
-function insertBombs(bombs, grid) {
-    for (let i = 0; i < grid.length; i++) {
-        for (let j = 0; j < bombs.length; j++) {
-            if (bombs[j] === i) {
-                grid[i].classList.add('bomb');
-                // console.log(grid[i]);
-            }
-        }
-    }
+// function insertBombs(bombs, grid) {
+//     for (let i = 0; i < grid.length; i++) {
+//         for (let j = 0; j < bombs.length; j++) {
+//             if (bombs[j] === i) {
+//                 grid[i].classList.add('bomb');
+//                 // console.log(grid[i]);
+//             }
+//         }
+//     }
 
-    //TODO: SUPERFLUO - PER CHEATTARE
-    // stampo in console dove sono le bombe
-    for (let i = 0; i < bombs.length; i++) {
-        console.log((bombs[i] + 1));
-    }
-}
+//     //TODO: SUPERFLUO - PER CHEATTARE
+//     // stampo in console dove sono le bombe
+//     for (let i = 0; i < bombs.length; i++) {
+//         console.log((bombs[i] + 1));
+//     }
+// }
 
 /*******************************************
     funzione che trasforma una griglia
@@ -266,10 +271,15 @@ function createMatrix(row, grid) {
         const matrixY = [];
         for (let y = 0; y < row; y++) {
             matrixY[y] = grid[index++];
-
         }
         matrixX.push(matrixY);
     }
+
+    // for (let x = 0; x < row; x++) {
+    //     for (let y = 0; y < row; y++) {
+    //         console.log((parseInt(matrixX[x][y].dataset.myCell)));
+    //     }
+    // }
     return matrixX;
 }
 
@@ -318,6 +328,10 @@ function revealArea(matrix, x, y) {
     // console.log(counter);
     // in ogni caso, se sto controllando, rivelo la casella
     matrix[x][y].classList.add('clicked');
+    console.log(matrix[x][y].classList);
+    console.log(!matrix[x][y].classList.contains('clicked'));
+
+
     // matrix[x][y].classList.add('checked');
 
     //decremento contatore celle da rivelare
@@ -332,19 +346,20 @@ function revealArea(matrix, x, y) {
 
     // controllo a riga -1, riga e riga+1
     for (let i = x - 1; i <= x + 1; i++) {
-        // controllo a colonna -1, colonna e colonna+1
         if (i >= 0 && i < matrix.length) {
+            // controllo a colonna -1, colonna e colonna+1
             for (let j = y - 1; j <= y + 1; j++) {
                 if (j >= 0 && j < matrix.length) {
-                    if (matrix[i][j].classList.contains('bomb')) {
+                    if (bombsArray.includes(parseInt(matrix[x][y].dataset.myCell))) {
                         counter++;
-                        // console.log(counter);
                     }
+                    // console.log(bombsArray.includes(parseInt(matrix[x][y].dataset.myCell)));
+
                 }
             }
         }
     }
-    // console.log(counter);
+    console.log(counter);
 
     // in ogni caso, se sto controllando, inserisco il risultato del conteggio bombe adiacenti nella casella
     matrix[x][y].innerHTML = counter;
@@ -363,6 +378,10 @@ function revealArea(matrix, x, y) {
                     if ((i !== x || j !== y) && !matrix[i][j].classList.contains('clicked')) {
                         // SE non ha bombe dintorno
                         if (counter === 0) {
+                            // console.log((i !== x || j !== y) && !matrix[i][j].classList.contains('clicked'));
+                            // console.log(counter);
+
+
                             revealArea(matrix, i, j)
                         }
                         // console.log(i, j, x, y);
@@ -378,7 +397,7 @@ function revealArea(matrix, x, y) {
 function revealAll(matrix) {
     for (let x = 0; x < matrix.length; x++) {
         for (let y = 0; y < matrix.length; y++) {
-            if (matrix[x][y].classList[matrix[x][y].classList.length - 1] == 'bomb') {
+            if (bombsArray.includes(parseInt(matrix[x][y].dataset.myCell))) {
                 matrix[x][y].innerHTML = '&#128163';
             }
             matrix[x][y].classList.add('clicked');
