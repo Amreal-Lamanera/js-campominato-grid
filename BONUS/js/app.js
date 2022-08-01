@@ -174,6 +174,7 @@ function clickHandler(e) {
     if (bombsArray.includes(parseInt(matrix[x][y].dataset.myCell))) {
         statusImg.src = "img/sad.png"
         matrix[x][y].innerHTML = '&#128163';
+        matrix[x][y].classList.add('bomb')
         revealAll(matrix);
         clearGame();
     } else { // altrimenti svelo l'area adiacente senza bombe
@@ -209,7 +210,7 @@ function clearGame() {
 const getBombsNum = (dim) => {
     if (dim == 10) {
         return dim;
-    } else if (dim === 15) {
+    } else if (dim == 15) {
         return dim * 2;
     } else {
         return dim * 3;
@@ -327,9 +328,9 @@ function revealArea(matrix, x, y) {
     let counter = 0;
     // console.log(counter);
     // in ogni caso, se sto controllando, rivelo la casella
+    // console.log(matrix[x][y].classList);
     matrix[x][y].classList.add('clicked');
-    console.log(matrix[x][y].classList);
-    console.log(!matrix[x][y].classList.contains('clicked'));
+    // console.log(!matrix[x][y].classList.contains('clicked'));
 
 
     // matrix[x][y].classList.add('checked');
@@ -350,7 +351,7 @@ function revealArea(matrix, x, y) {
             // controllo a colonna -1, colonna e colonna+1
             for (let j = y - 1; j <= y + 1; j++) {
                 if (j >= 0 && j < matrix.length) {
-                    if (bombsArray.includes(parseInt(matrix[x][y].dataset.myCell))) {
+                    if (bombsArray.includes(parseInt(matrix[i][j].dataset.myCell))) {
                         counter++;
                     }
                     // console.log(bombsArray.includes(parseInt(matrix[x][y].dataset.myCell)));
@@ -380,8 +381,6 @@ function revealArea(matrix, x, y) {
                         if (counter === 0) {
                             // console.log((i !== x || j !== y) && !matrix[i][j].classList.contains('clicked'));
                             // console.log(counter);
-
-
                             revealArea(matrix, i, j)
                         }
                         // console.log(i, j, x, y);
@@ -399,6 +398,7 @@ function revealAll(matrix) {
         for (let y = 0; y < matrix.length; y++) {
             if (bombsArray.includes(parseInt(matrix[x][y].dataset.myCell))) {
                 matrix[x][y].innerHTML = '&#128163';
+                matrix[x][y].classList.add('bomb')
             }
             matrix[x][y].classList.add('clicked');
         }
