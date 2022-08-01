@@ -107,7 +107,7 @@ button .navbar-toggler-icon {
     justify-content: center;
     align-items: center;
     color: white;
-    font-size: 1rem;
+    font-size: 0.5rem;
     cursor: pointer;
     background-color: grey;
 }
@@ -115,6 +115,7 @@ button .navbar-toggler-icon {
 @media (min-width:576px) {
     .square {
         width: 25px;
+        font-size: 0.75rem;
     }
 }
 
@@ -122,6 +123,7 @@ button .navbar-toggler-icon {
     .square {
         width: 35px;
         border: 2px solid white;
+        font-size: 1rem;
     }
 }
 
