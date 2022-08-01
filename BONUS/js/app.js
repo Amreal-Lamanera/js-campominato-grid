@@ -34,6 +34,11 @@ function playGame() {
     // recupero difficoltà dal DOM
     let rowNum = parseInt(document.querySelector('select').value);
 
+    // controllo se l'utente fa delle "furbate" con l'inspector
+    if ((rowNum !== 10 && rowNum !== 15 && rowNum !== 20) || isNaN(rowNum)) {
+        rowNum = 20;
+    }
+
     // riferimento griglia dal DOM
     let tableContainerElement = document.querySelector('.tableContainer');
     // console.log(tableContainerElement);
@@ -58,7 +63,8 @@ function playGame() {
     // genero un array di numeri random
     // const bombsArray = getBombsArray(bombsNum, cellsNum);
     bombsArray = getBombsArray(bombsNum, cellsNum);
-    console.log(bombsArray);
+    // TODO: per vedere dove sono le bombe
+    // console.log(bombsArray);
 
     // inserisco le bombe
     // insertBombs(bombsArray, myGrid);
@@ -208,9 +214,9 @@ function clearGame() {
     presenti
 *******************************************/
 const getBombsNum = (dim) => {
-    if (dim == 10) {
+    if (dim === 10) {
         return dim;
-    } else if (dim == 15) {
+    } else if (dim === 15) {
         return dim * 2;
     } else {
         return dim * 3;
@@ -297,6 +303,8 @@ function addHandler(matrix) {
             // console.log(matrix[x][y]);
             matrix[x][y].addEventListener('click', clickHandler);
 
+            // TODO: try clickHandler.bind(matrix[x][y],matrix)
+
             // implemento la bandierina col click destro
             matrix[x][y].addEventListener('contextmenu', function (ev) {
                 ev.preventDefault();
@@ -354,17 +362,13 @@ function revealArea(matrix, x, y) {
                     if (bombsArray.includes(parseInt(matrix[i][j].dataset.myCell))) {
                         counter++;
                     }
-                    // console.log(bombsArray.includes(parseInt(matrix[x][y].dataset.myCell)));
-
                 }
             }
         }
     }
-    console.log(counter);
 
     // in ogni caso, se sto controllando, inserisco il risultato del conteggio bombe adiacenti nella casella
     matrix[x][y].innerHTML = counter;
-    // console.log(matrix.length);
 
     // controllo a riga -1, riga e riga+1
     for (let i = x - 1; i <= x + 1; i++) {
@@ -379,13 +383,8 @@ function revealArea(matrix, x, y) {
                     if ((i !== x || j !== y) && !matrix[i][j].classList.contains('clicked')) {
                         // SE non ha bombe dintorno
                         if (counter === 0) {
-                            // console.log((i !== x || j !== y) && !matrix[i][j].classList.contains('clicked'));
-                            // console.log(counter);
                             revealArea(matrix, i, j)
                         }
-                        // console.log(i, j, x, y);
-                        // console.dir(matrix[i][j].classList);
-                        // console.log(matrix[i][j]);
                     }
                 }
             }
