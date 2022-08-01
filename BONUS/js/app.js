@@ -14,7 +14,9 @@ const toRevealElement = document.getElementById('toReveal');
 // console.log(toRevealElement);
 const bombsNumElement = document.getElementById('bombsNum');
 
-// funzione di avvio del gioco
+/*******************************************
+    funzione di avvio del gioco
+*******************************************/
 function playGame() {
     // console.log("gioca");
 
@@ -58,6 +60,8 @@ function playGame() {
     // inserisco le bombe
     insertBombs(bombsArray, myGrid);
 
+    // TODO: la matrice dovrebbe essere superflua qua... bisogna quindi chiamare addHandler su myGrid e modificare la funziona di conseguenza - DA VERIFICARE
+
     // Creo una matrice
     const matrix = createMatrix(rowNum, myGrid);
     // console.log(matrix);
@@ -70,7 +74,9 @@ function playGame() {
 
 }
 
-// funzione che crea la griglia
+/*******************************************
+    funzione che crea la griglia
+*******************************************/
 function createGrid(dim, tableContainer) {
     // console.log(tableContainer.innerHTML);
 
@@ -100,7 +106,9 @@ function createGrid(dim, tableContainer) {
     return grid;
 }
 
-// funzione che crea l'elemento casella
+/*******************************************
+    funzione che crea l'elemento casella
+*******************************************/
 function getSquareElement() {
     const square = document.createElement('div');
     square.classList.add('square');
@@ -109,7 +117,9 @@ function getSquareElement() {
     return square;
 }
 
-// funzione che gestisce il click
+/*******************************************
+    funzione che gestisce il click
+*******************************************/
 function clickHandler(e) {
     // console.log(e.composedPath()[1]);
     // console.log(this);
@@ -172,11 +182,10 @@ function clickHandler(e) {
     matrix[x][y].removeEventListener('click', clickHandler);
 }
 
-// funzione che "pulisce" il gioco all'avvio di un new game
+/*******************************************
+    funzione che rimuove gli eventi
+*******************************************/
 function clearGame() {
-    // nascondo le scritte
-    // toRevealElement.classList.add('d-none');
-
     // so che se non è vuoto, tutti gli elementi avranno ALMENO la classe square
     const squareElements = document.querySelectorAll('.square');
     // console.log(squareElements.length);
@@ -188,16 +197,14 @@ function clearGame() {
     }
 }
 
-// funzione di supporto al filtro per eliminare doppioni da un array
-const unique = (value, index, self) => {
-    return self.indexOf(value) === index;
-}
-
-// funzione che genera il numero di bombe presenti
+/*******************************************
+    funzione che genera il numero di bombe
+    presenti
+*******************************************/
 const getBombsNum = (dim) => {
-    if (dim == 7) {
+    if (dim == 10) {
         return dim;
-    } else if (dim === 9) {
+    } else if (dim === 15) {
         return dim * 2;
     } else {
         return dim * 3;
@@ -205,7 +212,10 @@ const getBombsNum = (dim) => {
     // console.log("NUMERO: ", bombsNum);
 }
 
-// funzione che genera un array con la posizione delle bombe
+/*******************************************
+    funzione che genera un array con la
+    posizione delle bombe
+*******************************************/
 const getBombsArray = (dim, num) => {
     const array = [];
     for (let i = 0; i < dim; i++) {
@@ -218,6 +228,14 @@ const getBombsArray = (dim, num) => {
         }
     }
     return array;
+}
+
+/*******************************************
+    funzione di supporto al filtro per
+    eliminare doppioni da un array
+*******************************************/
+const unique = (value, index, self) => {
+    return self.indexOf(value) === index;
 }
 
 function insertBombs(bombs, grid) {
@@ -237,7 +255,10 @@ function insertBombs(bombs, grid) {
     }
 }
 
-// funzione che trasforma una griglia in una matrice
+/*******************************************
+    funzione che trasforma una griglia
+    in una matrice
+*******************************************/
 function createMatrix(row, grid) {
     const matrixX = [];
     let index = 0;
@@ -252,6 +273,10 @@ function createMatrix(row, grid) {
     return matrixX;
 }
 
+/*******************************************
+    funzione che aggiunge gli event
+    a tutti gli elementi
+*******************************************/
 function addHandler(matrix) {
     for (let x = 0; x < matrix.length; x++) {
         for (let y = 0; y < matrix.length; y++) {
@@ -260,7 +285,8 @@ function addHandler(matrix) {
             // });
             // console.log(matrix[x][y]);
             matrix[x][y].addEventListener('click', clickHandler);
-            // TODO: implemento la bandierina che rimarrà attiva anche a gioco finito
+
+            // implemento la bandierina col click destro
             matrix[x][y].addEventListener('contextmenu', function (ev) {
                 ev.preventDefault();
 
@@ -281,15 +307,22 @@ function addHandler(matrix) {
 //     return function removeHandler() {
 //         clickHandler(matrix, x, y);
 //     }
-
 // }
 
+/*******************************************
+    funzione che gestisce il rivelamento
+    degli elementi adiacenti
+*******************************************/
 function revealArea(matrix, x, y) {
     let counter = 0;
     // console.log(counter);
+    // in ogni caso, se sto controllando, rivelo la casella
     matrix[x][y].classList.add('clicked');
-    matrix[x][y].classList.add('checked');
+    // matrix[x][y].classList.add('checked');
+
+    //decremento contatore celle da rivelare
     bombsNumElement.innerHTML -= 1;
+    // SE arrivo a 0 => VITTORIA
     if (bombsNumElement.innerHTML == 0) {
         clearGame();
         statusImg.src = "img/cool.png";
@@ -303,30 +336,32 @@ function revealArea(matrix, x, y) {
         if (i >= 0 && i < matrix.length) {
             for (let j = y - 1; j <= y + 1; j++) {
                 if (j >= 0 && j < matrix.length) {
-                    if (matrix[i][j].classList[1] === 'bomb') {
+                    if (matrix[i][j].classList.contains('bomb')) {
                         counter++;
                         // console.log(counter);
                     }
-                    // console.log(matrix[i][j].classList, (matrix[i][j].classList.length - 1));
-
-                    // else {
-                    //     revealArea(matrix, i, y)
-                    // }
                 }
             }
         }
     }
     // console.log(counter);
 
+    // in ogni caso, se sto controllando, inserisco il risultato del conteggio bombe adiacenti nella casella
     matrix[x][y].innerHTML = counter;
     // console.log(matrix.length);
 
+    // controllo a riga -1, riga e riga+1
     for (let i = x - 1; i <= x + 1; i++) {
-        // controllo a colonna -1, colonna e colonna+1
+        // SE l'indice esiste
         if (i >= 0 && i < matrix.length) {
+            // controllo a colonna -1, colonna e colonna+1
             for (let j = y - 1; j <= y + 1; j++) {
+                // SE l'indice esiste
                 if (j >= 0 && j < matrix.length) {
-                    if ((i !== x || j !== y) && matrix[i][j].classList[matrix[i][j].classList.length - 1] !== 'checked') {
+                    // SE non è se stesso (altrimenti va in loop)
+                    // E SE non contiente la classe clicked (loop di nuovo - cella già controllata)
+                    if ((i !== x || j !== y) && !matrix[i][j].classList.contains('clicked')) {
+                        // SE non ha bombe dintorno
                         if (counter === 0) {
                             revealArea(matrix, i, j)
                         }
