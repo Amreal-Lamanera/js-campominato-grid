@@ -263,10 +263,13 @@ function addHandler(matrix) {
             // TODO: implemento la bandierina che rimarrà attiva anche a gioco finito
             matrix[x][y].addEventListener('contextmenu', function (ev) {
                 ev.preventDefault();
-                if (this.innerHTML == '') {
-                    this.innerHTML = '&#9873;';
-                } else {
-                    this.innerHTML = '';
+
+                if (!this.classList.contains('clicked')) {
+                    if (this.innerHTML == '') {
+                        this.innerHTML = '&#9873;';
+                    } else {
+                        this.innerHTML = '';
+                    }
                 }
                 return false;
             }, false);
